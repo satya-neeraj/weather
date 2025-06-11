@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather App</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="weather-bg"></div>
+  <main class="weather-container" id="container">
+    <header>
+      <h1>WeatherNow</h1>
+      <div class="toggles">
+        <button type="button" id="toggleUnit" title="Switch °C/°F">°F</button>
+        <button type="button" id="toggleTheme" title="Toggle dark/light mode">🌙</button>
+      </div>
+    </header>
+    <form id="weatherForm" autocomplete="off">
+      <input type="text" id="cityInput" placeholder="Enter city..." required />
+      <button type="submit" title="Search by city">🔍</button>
+      <button type="button" id="geoBtn" title="Use current location">📍</button>
+    </form>
+    <div id="info"></div>
+    <section id="weatherCard" class="hidden"></section>
+    <section id="recent"></section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
