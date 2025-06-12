@@ -1,6 +1,6 @@
 localStorage.removeItem("recentCities");
 
-const API_KEY = "xhXAKSGguu9GQ5opZKDMUjb2NsZhiCOX"; 
+const API_KEY = "xhXAKSGguu9GQ5opZKDMUjb2NsZhiCOX";
 
 const form = document.getElementById("weatherForm");
 const cityInput = document.getElementById("cityInput");
@@ -19,50 +19,45 @@ setTheme(theme);
 toggleUnitBtn.textContent = unit === "metric" ? "°F" : "°C";
 renderRecent();
 
-form.addEventListener("submit", async (e) => {
+form.onsubmit = async e => {
   e.preventDefault();
   const city = cityInput.value.trim();
-  if (!city) return;
-  fetchWeatherByCity(city);
-});
+  if (city) fetchWeatherByCity(city);
+};
 
-geoBtn.addEventListener("click", () => {
+geoBtn.onclick = () => {
   if (!navigator.geolocation) {
     info.textContent = "Geolocation not supported.";
     return;
   }
-  info.textContent = "Fetching location...";
+  info.textContent = "Fetching your current location...";
   weatherCard.classList.add("hidden");
   navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
-    },
-    () => {
-      info.textContent = "Unable to get location.";
-    }
+    pos => fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude),
+    () => (info.textContent = "Unable to get your location.")
   );
-});
+};
 
-toggleUnitBtn.addEventListener("click", () => {
+toggleUnitBtn.onclick = () => {
   unit = unit === "metric" ? "imperial" : "metric";
   localStorage.setItem("unit", unit);
   toggleUnitBtn.textContent = unit === "metric" ? "°F" : "°C";
   weatherCard.classList.add("hidden");
   info.textContent = "";
-});
+};
 
-toggleThemeBtn.addEventListener("click", () => {
+toggleThemeBtn.onclick = () => {
   theme = theme === "light" ? "dark" : "light";
   setTheme(theme);
   localStorage.setItem("theme", theme);
-});
+};
 
-recentDiv.addEventListener("click", (e) => {
-  if (e.target.tagName === "SPAN") {
+recentDiv.onclick = e => {
+  if (e.target.classList.contains("recent-tag")) {
     cityInput.value = e.target.textContent;
     fetchWeatherByCity(e.target.textContent);
   }
-});
+};
 
 function setTheme(mode) {
   document.body.classList.toggle("dark", mode === "dark");
@@ -70,17 +65,15 @@ function setTheme(mode) {
 }
 
 async function fetchWeatherByCity(city) {
-  info.textContent = "Loading...";
+  info.textContent = "Loading weather...";
   weatherCard.classList.add("hidden");
   try {
-    // Step 1: Get Location Key
     const locRes = await fetch(
       `https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${encodeURIComponent(city)}`
     );
     const locData = await locRes.json();
-    if (!locData.length) throw new Error("City not found");
+    if (!locData.length) throw new Error("City not found. Please try another city.");
     const location = locData[0];
-    // Step 2: Get Weather by Location Key
     await fetchWeatherByLocationKey(location.Key, location.LocalizedName, location.Country.ID);
     saveRecent(city);
     info.textContent = "";
@@ -90,16 +83,14 @@ async function fetchWeatherByCity(city) {
 }
 
 async function fetchWeatherByCoords(lat, lon) {
-  info.textContent = "Loading...";
+  info.textContent = "Loading weather...";
   weatherCard.classList.add("hidden");
   try {
-    // Step 1: Get Location Key by geocoordinates
     const locRes = await fetch(
       `https://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${API_KEY}&q=${lat},${lon}`
     );
     const location = await locRes.json();
-    if (!location.Key) throw new Error("Location not found");
-    // Step 2: Get Weather by Location Key
+    if (!location.Key) throw new Error("Location not found.");
     await fetchWeatherByLocationKey(location.Key, location.LocalizedName, location.Country.ID);
     saveRecent(location.LocalizedName);
     info.textContent = "";
@@ -109,14 +100,12 @@ async function fetchWeatherByCoords(lat, lon) {
 }
 
 async function fetchWeatherByLocationKey(locationKey, cityName, countryCode) {
-  // Step 2: Get Current Conditions
   const weatherRes = await fetch(
     `https://dataservice.accuweather.com/currentconditions/v1/${locationKey}?apikey=${API_KEY}&details=true`
   );
   const weatherArr = await weatherRes.json();
-  if (!weatherArr.length) throw new Error("Weather data not found");
-  const weather = weatherArr[0];
-  renderWeather(weather, cityName, countryCode);
+  if (!weatherArr.length) throw new Error("Weather data not found.");
+  renderWeather(weatherArr[0], cityName, countryCode);
 }
 
 function renderWeather(weather, cityName, countryCode) {
