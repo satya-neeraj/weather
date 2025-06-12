@@ -3,7 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
 }
-.container{
+
+.container {
   text-align: center;
 }
 
@@ -12,21 +13,25 @@ body {
   min-width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* Changed from space-between to center for better layout */
   font-family: 'Montserrat', Arial, sans-serif;
   background: var(--bg-gradient, linear-gradient(135deg, #76b2fe 0%, #b69efe 100%));
   color: var(--text, #222);
   transition: background 0.5s, color 0.3s;
   position: relative;
   overflow-x: hidden;
+  padding: 20px; /* Adds slight padding on mobile to avoid edge cutoff */
 }
 
 .weather-bg {
   position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   z-index: 0;
   background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-  opacity: 0.12;
+  opacity: 0.8;
   pointer-events: none;
 }
 
@@ -40,19 +45,18 @@ body {
   border-radius: 24px;
   box-shadow: var(--shadow, 0 8px 32px rgba(0,0,0,0.18));
   padding: 52px 48px 40px 48px;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
   transition: background 0.3s, color 0.3s, max-width 0.3s, padding 0.3s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Remove any margin! */
-  margin: 0;
+  margin: 0 auto; /* Center horizontally */
 }
 
 @media (max-width: 900px) {
   .weather-container {
     max-width: 90vw;
-    padding: 36px 12px 22px 12px;
+    padding: 36px 16px 24px 16px;
     min-width: unset;
   }
 }
