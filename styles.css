@@ -13,14 +13,14 @@ body {
   min-width: 100vw;
   display: flex;
   align-items: center;
-  justify-content: center; /* Changed from space-between to center for better layout */
+  justify-content: center; 
   font-family: 'Montserrat', Arial, sans-serif;
   background: var(--bg-gradient, linear-gradient(135deg, #76b2fe 0%, #b69efe 100%));
   color: var(--text, #222);
   transition: background 0.5s, color 0.3s;
   position: relative;
   overflow-x: hidden;
-  padding: 20px; /* Adds slight padding on mobile to avoid edge cutoff */
+  padding: 20px; 
 }
 
 .weather-bg {
@@ -50,7 +50,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto; /* Center horizontally */
+  margin: 0 auto; 
 }
 
 @media (max-width: 600px) {
